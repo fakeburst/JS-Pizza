@@ -16,58 +16,140 @@
 </head>
 <body>
 <div id="cart"></div>
-<div class="container">
-    <div class="row" id="pizza_list">
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail pizza-card">
-                <img src="assets/images/pizza_1.jpg">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container-fluid">
+					<div >
+		      			<a class="navbar-brand" href="#">KMA PIZZA</a>
+		    		</div>
+		    		<p class="navbar-text">
+		    			<div class="navbarRow">
+		    				<div class="navbarCell visible-xs-inline-block visible-sm-inline-block visible-lg-inline-block visible-md-inline-block" >
+		      					(044) 222 5 222
+		      				</div>
+		      				<div class="navbarCell visible-lg-inline-block visible-md-inline-block">
+		      					24 години/ 7 днів на тиждень
+		      				</div>
+		      				<div class="navbarCell visible-lg-inline-block">
+		      					Безкоштовна доставка піци
+		      				</div>
+		      				<div type="button" class=" btn btn-warning navbar-right">
+								Ввійти
+							</div>
+							
+		      			</div>
+		      			<hr class="navbarSeparator">
+		      			<div class="navbarRow">
+		      				<div style="display: inline-block;">
+		      					Піца
+		      				</div>
+		      			</div>
+		    		</p>
+				</div>
+</nav>
+<div class="container main">
+	<div class="row">
+		<div class="col-md-9 col-sm-7 col-xs-6">
+			<div class="container pizzas">
+			    <div class="row" id="pizza_list">
+			        <div class="col-sm-6 col-md-4">
+			            <div class="thumbnail pizza-card">
+			                <img src="assets/images/pizza_1.jpg">
 
-                <div class="caption"><h3>Thumbnail label</h3>
+			                <div class="caption"><h3>Thumbnail label</h3>
 
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+			                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
 
-                    <p>
-                        <a href="#" class="btn btn-primary">Button 2</a>
-                        <a href="#" class="btn btn-default">Button 1</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+			                    <p>
+			                        <a href="#" class="btn btn-primary">Button 2</a>
+			                        <a href="#" class="btn btn-default">Button 1</a>
+			                    </p>
+			                </div>
+			            </div>
+			        </div>
 
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail pizza-card">
-                <img src="assets/images/pizza_2.jpg">
+			        <div class="col-sm-6 col-md-4">
+			            <div class="thumbnail pizza-card">
+			                <img src="assets/images/pizza_2.jpg">
 
-                <div class="caption"><h3>Thumbnail label</h3>
+			                <div class="caption"><h3>Thumbnail label</h3>
 
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+			                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
 
-                    <p>
-                        <a href="#" class="btn btn-primary">Button 3</a>
-                        <a href="#" class="btn btn-default">Button 4</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+			                    <p>
+			                        <a href="#" class="btn btn-primary">Button 3</a>
+			                        <a href="#" class="btn btn-default">Button 4</a>
+			                    </p>
+			                </div>
+			            </div>
+			        </div>
 
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail pizza-card">
-                <img src="assets/images/pizza_3.jpg">
+			        <div class="col-sm-6 col-md-4">
+			            <div class="thumbnail pizza-card">
+			                <img src="assets/images/pizza_3.jpg">
 
-                <div class="caption"><h3>Thumbnail label</h3>
+			                <div class="caption"><h3>Thumbnail label</h3>
 
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+			                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
 
-                    <p>
-                        <a href="#" class="btn btn-primary">Button 5</a>
-                        <a href="#" class="btn btn-default">Button 6</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+			                    <p>
+			                        <a href="#" class="btn btn-primary">Button 5</a>
+			                        <a href="#" class="btn btn-default">Button 6</a>
+			                    </p>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-5 col-xs-6 cart">
+			<div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+				<div class="left">
+					<b>Залишилося</b>
+					<span class="label">1</span> 
+				</div>
+				<div class="clear">
+					Очистити кошик
+				</div>
+			</div>
+			<div class="order-one ng-scope">
+				<img class="img-aside pizza-icon" alt="Піца" src="<%= pizza.icon %>">
+				<p class="bold mb10 ng-scope">
+				<span class="order-title title " style="font-size: 20px;">Мала </span>
+				</p>
+				<div class="order-text">
+				<img class="diagonal-image" src="assets/images/size-icon.svg">
+				<span class="diagonal">30</span>
+				<img class="gram-image" src="assets/images/weight.svg">
+				<span class="gram">160</span>
+				</div>
+				<div class="price-box">
+				<span class="price">Ціна: 322 грн.</span>
+				<a class="minus btn btn-xs btn-danger btn-circle minus" >
+				<i class="glyphicon glyphicon-minus icon-white">
+				</i>
+				</a>
+				<span class="order-pizza-count" style="color:black;">322</span>
+				<a class="plus btn btn-xs btn-success btn-circle plus" >
+				<i class="glyphicon glyphicon-plus icon-white">
+
+				</i>
+				</a>
+				<a class="count-clear btn btn-xs btn-default btn-circle " >
+				<i class="glyphicon glyphicon-remove icon-white">
+
+				</i>
+				</a>
+				</div>
+			</div>
+			<div class="buy">
+				Сума замовлення 8800грн
+				<div>
+					<button class="btn btn-warning btn-block" type="button" style="min-width: 270px;">Buy</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
 <!-- jQuery JavaScript -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"> </script>
 
