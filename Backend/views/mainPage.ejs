@@ -1,0 +1,89 @@
+<% include common/header.ejs %>
+<script>
+    var order = true;
+</script>
+<div class="page-title">
+    <h2>
+        <span class="count-tile">
+            Усі піци
+        </span>
+        <span class="badge orange pizza-count" id="filter-count">
+            8
+        </span>
+    </h2>
+</div>
+<div class="all-pizza-type-wrap">
+    <ul class="nav nav-pills all-pizza-type">
+        <li class="pizza-filter-button active" id="filter-button-all-pizza" role="presentation">
+            <a href="#">
+                Усі
+            </a>
+        </li>
+        <li class="pizza-filter-button" id="filter-button-meat" role="presentation">
+            <a href="#">
+                Мясні
+            </a>
+        </li>
+        <li class="pizza-filter-button" id="filter-button-pineapples" role="presentation">
+            <a href="#">
+                З ананасами
+            </a>
+        </li>
+        <li class="pizza-filter-button" id="filter-button-mushrooms" role="presentation">
+            <a href="#">
+                З грибами
+            </a>
+        </li>
+        <li class="pizza-filter-button" id="filter-button-ocean" role="presentation">
+            <a href="#">
+                З морепродуктами
+            </a>
+        </li>
+        <li class="pizza-filter-button" id="filter-button-tomato" role="presentation">
+            <a href="#">
+                Вега
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="row" style="margin-right: 0px; margin-left: 0px; padding-top: 20px;">
+    <div class="row col-sm-9" id="pizza_list">
+    </div>
+    <div class="col-sm-3" id="cart">
+        <div class="inside-cart">
+            <nav class="navbar navbar-default" id="cartHeader">
+                <div class="navbar-left">
+                    <p class="navbar-text">
+                        Замовлення
+                        <span class="badge" id="count">
+                            0
+                        </span>
+                    </p>
+                </div>
+                <div class="navbar-right">
+                    <a class="navbar-text" href="#" id="clear" style="padding-right: 10px;">
+                        Очистити замовлення
+                    </a>
+                </div>
+            </nav>
+            <div id="cartList">
+            </div>
+            <div class="row buy">
+                <div class="row">
+                    <div class="col-md-6">
+                        Сума замовлення
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                        <span id="priceFinalle">0</span> грн
+                    </div>
+                </div>
+                <div class="row" style="padding: 15px">
+                    <button class="btn btn-warning btn-lg btn-block" id="buy" type="button">
+                        Замовити
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include common/footer.ejs %>

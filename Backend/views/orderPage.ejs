@@ -1,0 +1,127 @@
+<% include common/header.ejs %>
+<script>
+    var order = false;
+</script>
+<div class="row col-sm-9" style="margin-right: 0px; margin-left: 0px; padding-top: 50px;">
+    <div class="contact-form-1">
+    <form id="foo" action="/api/create-order/">
+        <input type="hidden" name="price" id="priceInput" value="0"></input>
+        <input type="hidden" name="desc" value="TODO"></input>
+        <div class="form-description-1">
+            1. Контактні дані
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <form class="form-horizontal">
+                    <div class="form-group name-group">
+                        <label class="col-sm-2 control-label">
+                            Ім’я
+                        </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="name" id="inputName" placeholder="ПІБ" type="text">
+                            </input>
+                        </div>
+                        <span class="name-help-block" style="display: none;">
+                            Введіть тільки власне ім’я, без цифр
+                        </span>
+                    </div>
+                    <div class="form-group phone-group">
+                        <label class="col-sm-2 control-label">
+                            Телефон
+                        </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="phone" id="inputPhone" placeholder="+380994010999" type="text">
+                            </input>
+                        </div>
+                        <span class="phone-help-block" style="display: none;">
+                            Введіть номер телефону у форматі +380 або почніть з 0
+                        </span>
+                    </div>
+                    <div class="form-group address-group">
+                        <label class="col-sm-2 control-label">
+                            Адреса
+                        </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" name="adress" id="inputAdress" placeholder="Київ, вул. Спаська, 2" type="text">
+                            </input>
+                        </div>
+                        <span class="address-help-block" style="display: none;">
+                            Введіть адресу доставки піци
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5 order-summary">
+                <div class=" bs-callout bs-callout-warning">
+                    <h4>
+                        Інформація про замовлення
+                    </h4>
+                    <p class="order-summery-time">
+                        <b>
+                            Приблизний час доставки
+                        </b>
+                        : <span id="timeFinale">невідомий</span>
+                    </p>
+                    <p class="order-summery-adress">
+                        <b>
+                            Адреса доставки:
+                        </b>
+                        <span id="addressFinale">невідома</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group next-step-wrap">
+                <div class="next-step-width">
+                    <button class="btn btn-warning btn-block next-step-button" type="button">
+                        Далі
+                        <i class="glyphicon glyphicon-chevron-right icon-white">
+                        </i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="google-maps" id="googleMap">
+    </div>
+</div>
+<div class="col-sm-3" id="cart">
+    <div class="inside-cart">
+        <nav class="navbar navbar-default" id="cartHeader">
+            <div class="navbar-left">
+                <p class="navbar-text">
+                    Замовлення
+                    <span class="badge" id="count">
+                        0
+                    </span>
+                </p>
+            </div>
+            <div class="navbar-right">
+                <a class="navbar-text" href="#" id="clear" style="padding-right: 10px;">
+                    Очистити замовлення
+                </a>
+            </div>
+        </nav>
+        <div id="cartList">
+        </div>
+        <div class="row buy">
+                <div class="row">
+                    <div class="col-md-6">
+                        Сума замовлення
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                        <span id="priceFinalle">0</span> грн
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCRuc6N18OuGNxpNbUXwglVEcLdZYi9AIQ"></script>
+<script type="text/javascript" src="assets/js/order.js"></script>
+
+<% include common/footer.ejs %>
+
+

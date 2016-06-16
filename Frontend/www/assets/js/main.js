@@ -1,5 +1,46 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
+ * Created by chaika on 09.02.16.
+ */
+//var API_URL = "http://localhost:8080";
+var API_URL = "http://localhost:8080";
+function backendGet(url, callback) {
+    $.ajax({
+        url: API_URL + url,
+        type: 'GET',
+        success: function(data){
+            callback(null, data);
+        },
+        fail: function() {
+            callback(new Error("Ajax Failed"));
+        }
+    })
+}
+
+function backendPost(url, data, callback) {
+    $.ajax({
+        url: API_URL + url,
+        type: 'POST',
+        contentType : 'application/json',
+        data: JSON.stringify(data),
+        success: function(data){
+            callback(null, data);
+        },
+        fail: function() {
+            callback(new Error("Ajax Failed"));
+        }
+    })
+}
+
+exports.getPizzaList = function(callback) {
+    backendGet("/api/get-pizza-list/", callback);
+};
+
+exports.createOrder = function(order_info, callback) {
+    backendPost("/api/create-order/", order_info, callback);
+};
+},{}],2:[function(require,module,exports){
+/**
  * Created by diana on 12.01.16.
  */
 
@@ -176,7 +217,7 @@ var pizza_info = [
 ];
 
 module.exports = pizza_info;
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -184,11 +225,11 @@ module.exports = pizza_info;
 var ejs = require('ejs');
 
 
-exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizza) {\n    //Отримує вміст піци\n    var content = pizza.content;\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n   %>\n<div class=\"col-md-6 col-lg-4 pizza-card\">\n    <div class=\"thumbnail\">\n        <img class=\"pizza-icon\" src=\"<%= pizza.icon %>\" alt=\"Pizza\">\n\n        <% if(pizza.is_new) { %>\n        <span class=\"label label-danger\">Нова</span>\n        <% } else if(pizza.is_popular) {%>\n        <span class=\"label label-success\">Популярна</span>\n        <% } %>\n\n        <div class=\"caption\">\n            <span class=\"title\"><%= pizza.title %></span>\n            <div class=\"type\"><%= pizza.type %></div>\n            <div class=\"description\">\n                <%= getIngredientsArray(pizza).join(\", \") %>\n            </div>\n        </div>\n\n        <!-- Перед тим щоб показати кнопку необхідно переконатися, що піца має великий розмір -->\n        <button class=\"btn btn-primary buy-big\">Купити велику</button>\n    </div>\n</div>");
+exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizza) {\n    var content = pizza.content;\n    var result = [];\n\n\n    Object.keys(content).forEach(function(key){\n\n        result = result.concat(content[key]);\n    });\n    //HUE HUE HUE\n    return result;\n}\n\n   %>\n<div class=\"col-md-6 col-lg-4 pizza-card\">\n    <div class=\"thumbnail\">\n        <img class=\"pizza-icon\" src=\"<%= pizza.icon %>\" alt=\"Pizza\">  \n        <% if(pizza.is_new) { %>\n        <h3 class=\"pizza-label-new\"><span class=\"label label-danger\">Нова</span></h3>\n        <% } else if(pizza.is_popular) {%>\n        <h3 class=\"pizza-label-new\"><span class=\"label label-danger\">Популярна</span></h3>\n        <% } %>\n        <div class=\"caption\">\n            <span class=\"title\"><%= pizza.title %></span>\n            <div class=\"type\"><%= pizza.type %></div>\n            <div class=\"description\">\n              <%= getIngredientsArray(pizza).join(\", \") %>\n            </div>\n        </div>\n        <div class=\"row\" style=\"padding-left: 9px !important; padding-right: 9px !important;\">\n           <% if (pizza.small_size){ %>\n            <div class=\"col-sm-6 pizza-small\">\n                <div>\n                    <img class=\"ui right spaced avatar image\" src=\"assets/images/size-icon.svg\">\n                    <span class=\"diagonal\"><%= pizza.small_size.size %></span>\n                </div>\n                <div>\n                    <img class=\"ui right spaced avatar image\" src=\"assets/images/weight.svg\">\n                    <span class=\"gram\"><%= pizza.small_size.weight %></span>\n                </div>\n                <h2>\n                    <div class=\"price\"><%= pizza.small_size.price %><div style=\"font-size:14px;\"> грн.</div></div>\n                </h2>\n                <a class=\"btn btn-warning buy-small buy-button-small\" role=\"button\">Купити</a>\n            </div>\n            <% } %>\n            <% if (pizza.big_size) { %>\n            <div class=\"col-sm-6 pizza-big\">\n                <div>\n                    <img class=\"ui right spaced avatar image\" src=\"assets/images/size-icon.svg\">\n                    <span class=\"diagonal\"><%= pizza.big_size.size %></span>\n                </div>\n                <div>\n                    <img class=\"ui right spaced avatar image\" src=\"assets/images/weight.svg\">\n                    <span class=\"gram\"><%= pizza.big_size.weight %></span>\n                </div>\n                <h2>\n                    <div class=\"price\"><%= pizza.big_size.price %><div style=\"font-size:14px;\"> грн.</div></div>\n                </h2>\n                <a class=\"btn btn-warning buy-big buy-button-big\" role=\"button\">Купити</a>\n            </div>\n            <% } %>\n        </div>\n    </div>\n</div>");
 
-exports.PizzaCart_OneItem = ejs.compile("<div>\n    <%= pizza.title %> (<%= size %>)\n    <div>Ціна: <%= pizza[size].price %> грн.</div>\n    <div>\n        <button class=\"btn btn-danger minus\">-</button>\n        <span class=\"label label-default\"><%= quantity %></span>\n        <button class=\"btn btn-success plus\">+</button>\n    </div>\n</div>");
+exports.PizzaCart_OneItem = ejs.compile("<div class=\"order-one ng-scope\">\n\t\t\t        <img class=\"img-aside pizza-icon\" alt=\"Піца\" src=\"assets/images/pizza_2.jpg\">\n\t\t\t        <p class=\"bold mb10 ng-scope\">\n\t\t\t            <span class=\"order-title title \" style=\"font-size: 20px;\"><%= pizza.title %> (<%= size %>) </span>\n\t\t\t        </p>\n\t\t\t        <div class=\"order-text\">\n\t\t\t            <img class=\"diagonal-image\" src=\"assets/images/size-icon.svg\">\n\t\t\t            <span class=\"diagonal\">30</span>\n\t\t\t            <img class=\"gram-image\" src=\"assets/images/weight.svg\">\n\t\t\t            <span class=\"gram\">160</span>\n\t\t\t        </div>\n\t\t\t        <div class=\"price-box\">\n\t\t\t            <% if(order) { %><span class=\"price\">Ціна: <%= pizza[size].price %> грн.</span>\n\t\t\t            <a class=\"minus btn btn-xs btn-danger btn-circle\" >\n\t\t\t                <i class=\"glyphicon glyphicon-minus icon-white\">\n\t\t\t                </i>\n\t\t\t            </a>\n\t\t\t            <span class=\"label order-pizza-count\" style=\"color:black;\"><%= quantity %></span>\n\t\t\t            <a class=\"plus btn btn-xs btn-success btn-circle`\" >\n\t\t\t                <i class=\"glyphicon glyphicon-plus icon-white\">\n\n\t\t\t                </i>\n\t\t\t            </a>\n\t\t\t            <a class=\"count-clear btn btn-xs btn-default btn-circle \" >\n\t\t\t                <i class=\"glyphicon glyphicon-remove icon-white\">\n\n\t\t\t                </i>\n\t\t\t            </a><% } else { %><b>\n\t\t\t            <span class=\"price\"><%= pizza[size].price %> грн.</span>\n\t\t\t            <span class=\"label order-pizza-count\" style=\"color:black;\"><%= quantity %> шт.</span></b>\n\t\t\t            <% } %>\n\t\t\t        </div>\n\t\t\t    </div>");
 
-},{"ejs":6}],3:[function(require,module,exports){
+},{"ejs":7}],4:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -198,13 +239,20 @@ $(function(){
     var PizzaMenu = require('./pizza/PizzaMenu');
     var PizzaCart = require('./pizza/PizzaCart');
     var Pizza_List = require('./Pizza_List');
-
-    PizzaCart.initialiseCart();
-    PizzaMenu.initialiseMenu();
-
-
+	var API = require('./API');
+    
+    API.getPizzaList(function(err, pizza){
+    	if (err){
+    		console.log("API error!");
+            console.log(err);
+    		return;
+    	}
+    	Pizza_List = pizza;
+    	PizzaCart.initialiseCart();
+    	PizzaMenu.initialiseMenu();
+    });
 });
-},{"./Pizza_List":1,"./pizza/PizzaCart":4,"./pizza/PizzaMenu":5}],4:[function(require,module,exports){
+},{"./API":1,"./Pizza_List":2,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6}],5:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -218,19 +266,28 @@ var PizzaSize = {
 
 //Змінна в якій зберігаються перелік піц в кошику
 var Cart = [];
+var cart_map = [];
 
 //HTML едемент куди будуть додаватися піци
-var $cart = $("#cart");
+var $cart = $("#cartList");
 
 function addToCart(pizza, size) {
-    //Додавання однієї піци в кошик покупок
 
-    //Приклад реалізації, можна робити будь-яким іншим способом
-    Cart.push({
-        pizza: pizza,
-        size: size,
-        quantity: 1
-    });
+    var cart_id = cart_map[pizza.id];
+
+    if (cart_id && (cart_id[size] || cart_id[size] === 0)){
+            Cart[cart_id[size]].quantity += 1;
+    } else {
+        if (!cart_map[pizza.id]){
+            cart_map[pizza.id] = [];
+        }
+        cart_map[pizza.id][size] = 
+        Cart.push({
+            pizza: pizza,
+            size: size,
+            quantity: 1
+        }) - 1;
+    }
 
     //Оновити вміст кошика на сторінці
     updateCart();
@@ -240,6 +297,10 @@ function removeFromCart(cart_item) {
     //Видалити піцу з кошика
     //TODO: треба зробити
 
+    if (cart_item.cart_id){
+        Cart.splice(cart_item.cart_id, 1);
+    }
+
     //Після видалення оновити відображення
     updateCart();
 }
@@ -248,6 +309,14 @@ function initialiseCart() {
     //Фукнція віпрацьвуватиме при завантаженні сторінки
     //Тут можна наприклад, зчитати вміст корзини який збережено в Local Storage то показати його
     //TODO: ...
+    $("#buy").click(function(){
+        window.location = "/order.html";
+    });
+    var cart = localStorage.getItem("cart");
+    if (cart) 
+        Cart = JSON.parse(cart);
+
+    $('#clear').click(clearCart);
 
     updateCart();
 }
@@ -263,10 +332,12 @@ function updateCart() {
 
     //Очищаємо старі піци в кошику
     $cart.html("");
-
+    var price = 0;
     //Онволення однієї піци
-    function showOnePizzaInCart(cart_item) {
+    function showOnePizzaInCart(cart_item, id, arr) {
         var html_code = Templates.PizzaCart_OneItem(cart_item);
+
+        cart_item.cart_id = id;
 
         var $node = $(html_code);
 
@@ -278,11 +349,48 @@ function updateCart() {
             updateCart();
         });
 
+        $node.find(".minus").click(function(){
+            
+            if (cart_item.quantity > 1){
+                cart_item.quantity -= 1;
+            }
+            
+            //Оновлюємо відображення
+            updateCart();
+        });
+        
+        $node.find(".count-clear").click(function(){
+             arr.splice(id, 1);
+
+             updateCart();
+        });
+        var localPrice = cart_item.quantity * cart_item.pizza[cart_item.size].price;
+        price += localPrice;
+
+        $("#priceFinalle").html(price);
+        
+        console.log(price);
+
         $cart.append($node);
     }
 
     Cart.forEach(showOnePizzaInCart);
 
+    var count = 0;
+    Cart.forEach(function(elem){
+        count += elem.quantity;
+    });
+    $('#count').html(count);
+
+
+    localStorage.setItem("cart", JSON.stringify(Cart));
+}
+
+function clearCart() {
+    Cart = [];
+    cart_map = [];
+
+    updateCart();
 }
 
 exports.removeFromCart = removeFromCart;
@@ -292,7 +400,7 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
-},{"../Templates":2}],5:[function(require,module,exports){
+},{"../Templates":3}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -329,26 +437,100 @@ function showPizzaList(list) {
 function filterPizza(filter) {
     //Масив куди потраплять піци які треба показати
     var pizza_shown = [];
+    var filt = filter.split(",");
 
+    
     Pizza_List.forEach(function(pizza){
         //Якщо піка відповідає фільтру
         //pizza_shown.push(pizza);
+        //var ingridient = getIngredientsArray(pizza);
+        var checked = [];
+        filt.forEach(function(f){
+            //if(checked) return;
+        if(f.charAt(0) == '!'){
+            var fil = f.substring(1);
+            console.log(fil);
+            if(!(fil in pizza.content)){
+                    console.log("Kek");
+                    checked.push(true);
+                }
+                else checked.push(false);
+        } else {
+            if(f in pizza.content)
+                checked.push(true);
+            else checked.push(false);
+        }
 
         //TODO: зробити фільтри
-    });
-
+        });
+        function isTrue(element, index, array) {
+            return element == true;
+        }
+        if(checked.every(isTrue)) pizza_shown.push(pizza);
+});
+    
     //Показати відфільтровані піци
     showPizzaList(pizza_shown);
 }
-
 function initialiseMenu() {
     //Показуємо усі піци
+
+    
+
     showPizzaList(Pizza_List)
+
+    $("#filter-button-meat").click(function(){
+        console.log("Meat");
+        $(".count-tile").html("М'ясні' піци");
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        filterPizza('meat');
+    });
+
+    $("#filter-button-pineapples").click(function(){
+        console.log("Pineapple");
+        $(".count-tile").html("Піци з ананасом");
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        filterPizza('pineapple');
+    });
+
+    $("#filter-button-mushrooms").click(function(){
+        console.log("Mushroom");
+        $(".count-tile").html("Грибні піци");
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        filterPizza('mushroom');
+    });
+
+    $("#filter-button-ocean").click(function(){
+        console.log("Ocean");
+        $(".count-tile").html("Піци з морепродуктами");
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        filterPizza('ocean');
+    });
+
+    $("#filter-button-tomato").click(function(){
+        console.log("Vega");
+        $(".count-tile").html("Вегетаріанські піци");
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        filterPizza('!meat,!ocean,!mushroom');
+    });
+
+    $("#filter-button-all-pizza").click(function(){
+        console.log("All type");
+        $(".count-tile").html("Усі піци");
+        $(".active").removeClass("active");
+        $(this).addClass("active");
+        showPizzaList(Pizza_List);
+    });
 }
 
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
-},{"../Pizza_List":1,"../Templates":2,"./PizzaCart":4}],6:[function(require,module,exports){
+},{"../Pizza_List":2,"../Templates":3,"./PizzaCart":5}],7:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -874,6 +1056,10 @@ Template.prototype = {
       , d = this.opts.delimiter;
 
     if (matches && matches.length) {
+      if (this.opts.compileDebug && this.opts.filename) {
+        this.source =  '    ; __lines = ' + JSON.stringify(this.templateText) + '\n';
+        this.source += '    ; __filename = "' + this.opts.filename.replace(/\\/g,  '/') + '"\n';
+      }
       matches.forEach(function (line, index) {
         var opening
           , closing
@@ -1058,6 +1244,12 @@ Template.prototype = {
   }
 };
 
+/*
+ * Export the internal function for escaping XML so people
+ * can use for manual escaping if needed
+ * */
+exports.escapeXML = utils.escapeXML;
+
 /**
  * Express.js support.
  *
@@ -1099,7 +1291,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":8,"./utils":7,"fs":9,"path":10}],7:[function(require,module,exports){
+},{"../package.json":9,"./utils":8,"fs":10,"path":11}],8:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1242,7 +1434,7 @@ exports.cache = {
 };
 
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports={
   "name": "ejs",
   "description": "Embedded JavaScript templates",
@@ -1251,7 +1443,7 @@ module.exports={
     "engine",
     "ejs"
   ],
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1290,16 +1482,17 @@ module.exports={
   },
   "scripts": {
     "test": "mocha",
+    "sample": "npm install express && node sample/index.js",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
     "doc": "rimraf out && jsdoc -c jsdoc.json lib/* docs/jsdoc/*",
     "devdoc": "rimraf out && jsdoc -p -c jsdoc.json lib/* docs/jsdoc/*"
   },
-  "_id": "ejs@2.4.1",
-  "_shasum": "82e15b1b2a1f948b18097476ba2bd7c66f4d1566",
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.4.1.tgz",
+  "_id": "ejs@2.4.2",
+  "_shasum": "7057eb4812958fb731841cd9ca353343efe597b1",
+  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.4.2.tgz",
   "_from": "ejs@>=2.4.1 <3.0.0",
-  "_npmVersion": "2.10.1",
-  "_nodeVersion": "0.12.4",
+  "_npmVersion": "2.15.1",
+  "_nodeVersion": "4.4.4",
   "_npmUser": {
     "name": "mde",
     "email": "mde@fleegix.org"
@@ -1315,16 +1508,20 @@ module.exports={
     }
   ],
   "dist": {
-    "shasum": "82e15b1b2a1f948b18097476ba2bd7c66f4d1566",
-    "tarball": "http://registry.npmjs.org/ejs/-/ejs-2.4.1.tgz"
+    "shasum": "7057eb4812958fb731841cd9ca353343efe597b1",
+    "tarball": "https://registry.npmjs.org/ejs/-/ejs-2.4.2.tgz"
+  },
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/ejs-2.4.2.tgz_1464117640663_0.8193834638223052"
   },
   "directories": {},
   "readme": "ERROR: No README data found!"
 }
 
-},{}],9:[function(require,module,exports){
-
 },{}],10:[function(require,module,exports){
+
+},{}],11:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1552,16 +1749,44 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":11}],11:[function(require,module,exports){
+},{"_process":12}],12:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+(function () {
+  try {
+    cachedSetTimeout = setTimeout;
+  } catch (e) {
+    cachedSetTimeout = function () {
+      throw new Error('setTimeout is not defined');
+    }
+  }
+  try {
+    cachedClearTimeout = clearTimeout;
+  } catch (e) {
+    cachedClearTimeout = function () {
+      throw new Error('clearTimeout is not defined');
+    }
+  }
+} ())
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -1577,7 +1802,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = cachedSetTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -1594,7 +1819,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    cachedClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -1606,7 +1831,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        cachedSetTimeout(drainQueue, 0);
     }
 };
 
@@ -1645,4 +1870,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[3]);
+},{}]},{},[4]);
